@@ -1,30 +1,36 @@
+import {Divider, AppBar, Backdrop, BackdropSubheader} from '@react-native-material/core';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View, } from 'react-native';
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {IPokemonRef} from '../interface/IPokemonRef';
 import {getPokemons} from '../services/requisitions';
 import {RootStackParamList} from '../types/RootStakParamList';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export default function Home({route, navigation}:Props) {
+export default function Home({route, navigation}: Props) {
   const [pokemons, setPokemons] = useState<IPokemonRef[]>([]);
-  
+
   async function GetPokemonList() {
     const resultado = await getPokemons();
     setPokemons(resultado?.data.results);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     GetPokemonList();
-  },[])
+  }, []);
 
   return (
     <View>
+      <AppBar title="PokeAgenda TS" elevation={8}/>
       <FlatList
-        ListHeaderComponent={
-          <Text style={styles.titulo}>Poke Agenda TS: WIP</Text>
-        }
         data={pokemons}
         renderItem={({item}) => <HomeItem {...item} />}
       />
@@ -36,7 +42,10 @@ export default function Home({route, navigation}:Props) {
       <TouchableOpacity
         style={styles.item}
         onPress={() => navigation.navigate('Pokemon', {pokemonRef: item})}>
-        <Text style={{paddingVertical: 10}}>{item.name}</Text>
+        <Text style={{paddingVertical: 16}}>
+          {item.name}
+        </Text>
+        <Divider/>
       </TouchableOpacity>
     );
   }
@@ -50,6 +59,6 @@ const styles = StyleSheet.create({
     marginVertical: 36,
   },
   item: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
   },
 });
