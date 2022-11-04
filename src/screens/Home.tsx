@@ -1,17 +1,11 @@
-import {Divider, AppBar, Backdrop, BackdropSubheader} from '@react-native-material/core';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {
-  Button,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import {IPokemonRef} from '../interface/IPokemonRef';
 import {getPokemons} from '../services/requisitions';
 import {RootStackParamList} from '../types/RootStakParamList';
+import {Appbar, Divider, useTheme} from 'react-native-paper';
+import PokemonItemList from './components/PokemonItemList';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -27,28 +21,26 @@ export default function Home({route, navigation}: Props) {
     GetPokemonList();
   }, []);
 
+  const theme = useTheme();
   return (
     <View>
-      <AppBar title="PokeAgenda TS" elevation={8}/>
+      <Appbar.Header elevated>
+        <Appbar.Content title="Tittle" />
+      </Appbar.Header>
+
       <FlatList
+        style={{backgroundColor: theme.colors.background}}
         data={pokemons}
-        renderItem={({item}) => <HomeItem {...item} />}
+        renderItem={({item}) => (
+          <PokemonItemList
+            name={item.name}
+            onClick={() => navigation.navigate('Pokemon', {pokemonRef: item})}
+          />
+        )}
+        ItemSeparatorComponent={Divider}
       />
     </View>
   );
-
-  function HomeItem(item: IPokemonRef) {
-    return (
-      <TouchableOpacity
-        style={styles.item}
-        onPress={() => navigation.navigate('Pokemon', {pokemonRef: item})}>
-        <Text style={{paddingVertical: 16}}>
-          {item.name}
-        </Text>
-        <Divider/>
-      </TouchableOpacity>
-    );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -57,8 +49,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 36,
-  },
-  item: {
-    paddingHorizontal: 16,
   },
 });

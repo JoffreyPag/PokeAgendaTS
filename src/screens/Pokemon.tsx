@@ -1,20 +1,20 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {
-  Alert,
   FlatList,
   Image,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { IAbility } from '../interface/IAbility';
 import {IPokemon} from '../interface/IPokemon';
-import {getAbility, getPokemon} from '../services/requisitions';
+import {getPokemon} from '../services/requisitions';
 import {RootStackParamList} from '../types/RootStakParamList';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {Appbar, Divider, useTheme, Text, Button} from 'react-native-paper';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Pokemon'>;
+
 export default function Pokemon({route, navigation}: Props) {
   const pokemonref = route.params.pokemonRef;
   const [pokemon, setPokemon] = useState<IPokemon>();
@@ -29,31 +29,46 @@ export default function Pokemon({route, navigation}: Props) {
   useEffect(() => {
     setImageUrl(pokemon?.sprites.front_default);
   }, [pokemon]);
-
-  async function OnAbilityPressed(url:string){
-
-  }
+  async function OnAbilityPressed(url: string) {}
   return (
     <View>
       <View style={style.backgroundImage}>
         <Image style={style.image} source={{uri: imageUrl}} />
       </View>
-      <Text style={style.name}>{pokemon?.name?.toUpperCase()}</Text>
-      <Text style={style.details}>Height: {pokemon?.height}</Text>
-      <Text style={style.details}>Weight: {pokemon?.weight}</Text>
-      <Text style={style.details}>Type: {pokemon?.types[0].type.name}</Text>
+      <Text style={style.pokemonName} variant="titleLarge">
+        {pokemon?.name?.toUpperCase()}
+      </Text>
+      <Text style={style.info} variant="bodyLarge">
+        Height: {pokemon?.height}
+      </Text>
+      <Text style={style.info} variant="bodyLarge">
+        Weight: {pokemon?.weight}
+      </Text>
+      <Text style={style.info} variant="bodyLarge">
+        Type: {pokemon?.types[0].type.name}
+      </Text>
       <FlatList
         data={pokemon?.abilities}
         ListHeaderComponent={<Text> Abilities </Text>}
         renderItem={({item}) => (
-          <TouchableOpacity onPress={()=>OnAbilityPressed(item.ability.url)}>
-            <Text style={style.details}>{item.ability.name}</Text>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity
+              style={style.itemButton}
+              onPress={() => OnAbilityPressed(item.ability.url)}>
+              <Text style={[style.abilitiesItem, {}]}>{item.ability.name}</Text>
+              <Icon
+                name="arrow-forward-ios"
+                size={24}
+                style={{alignSelf: 'center'}}
+              />
+            </TouchableOpacity>
+          </View>
         )}
       />
     </View>
   );
 }
+
 const style = StyleSheet.create({
   image: {
     width: 200,
@@ -61,19 +76,26 @@ const style = StyleSheet.create({
     display: 'flex',
     alignSelf: 'center',
   },
-  name: {
-    fontSize: 24,
-    color: 'black',
+  pokemonName: {
     textAlign: 'center',
     fontWeight: 'bold',
   },
-  details: {
-    fontSize: 16,
+  info: {
     marginHorizontal: 16,
     marginVertical: 8,
   },
   backgroundImage: {
     backgroundColor: '#3f3f3f',
     height: 200,
+  },
+  abilitiesItem: {
+    marginVertical: 16,
+    marginHorizontal: 16,
+    color: 'black',
+  },
+  itemButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });
