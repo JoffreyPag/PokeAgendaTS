@@ -1,9 +1,9 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {IPokemonRef} from '../interface/IPokemonRef';
-import {getPokemons} from '../services/requisitions';
-import {RootStackParamList} from '../types/RootStakParamList';
+import {IPokemonRef} from '../../interface/IPokemonRef';
+import {getPokemons} from '../../services/requisitions';
+import {RootStackParamList} from '../../types/RootStakParamList';
 import {Appbar, Divider, useTheme} from 'react-native-paper';
 import PokemonItemList from './components/PokemonItemList';
 
