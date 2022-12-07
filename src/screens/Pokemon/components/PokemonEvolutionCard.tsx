@@ -6,6 +6,7 @@ import {IPokemon} from '../../../interface/IPokemon';
 import {useNavigation} from '@react-navigation/core';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../types/RootStakParamList';
+import { CapitalizeFirstLetter } from '../../../utils/util';
 
 interface Props {
   specie:
@@ -56,7 +57,7 @@ export default function PokemonEvolutionCard({specie}: Props) {
               uri: pokemon?.sprites.other?.['official-artwork'].front_default,
             }}
           />
-          <Title> {pokemon?.name} </Title>
+          <Title> { pokemon && CapitalizeFirstLetter(pokemon.name)} </Title>
         </Card.Content>
       </Card>
     </TouchableOpacity>

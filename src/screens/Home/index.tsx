@@ -11,9 +11,10 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function Home({route, navigation}: Props) {
   const [pokemons, setPokemons] = useState<IPokemonRef[]>([]);
-
+  const [nextURL, setNextURL] = useState();
   async function GetPokemonList() {
     const resultado = await getPokemons();
+    setNextURL(resultado?.data.next)
     setPokemons(resultado?.data.results);
   }
 
@@ -29,12 +30,13 @@ export default function Home({route, navigation}: Props) {
       </Appbar.Header>
 
       <FlatList
+        contentContainerStyle={{paddingBottom:60}}
         style={{backgroundColor: theme.colors.background}}
         data={pokemons}
         renderItem={({item}) => (
           <PokemonItemList
-            name={item.name}
             onClick={() => navigation.navigate('Pokemon', {pokemonRef: item})}
+            pokemonRef={item}
           />
         )}
         ItemSeparatorComponent={Divider}

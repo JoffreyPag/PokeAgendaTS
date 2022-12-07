@@ -12,6 +12,17 @@ export async function getPokemons(){
     }
     return null
 }
+export async function getMorePokemons(url:string){
+    try{
+        var newUrl = url.slice(26);
+        console.log(newUrl);
+        const res = await api.get(newUrl);
+        return res;
+    }catch(error){
+        console.log(error)
+    }
+    return null
+}
 
 export async function getPokemon(url:string){
     try{
@@ -54,4 +65,15 @@ export async function getEvolutionChain(url:string) {
         console.log(error);
     }
     return {}
+}
+
+export async function getPokemonImage(url:string){
+    try{
+        var id = url.split('/')[6]
+        const res = await api.get<IPokemon>(`pokemon/${id}`)
+        return res.data.sprites.other?.['official-artwork'].front_default
+    }catch(error){
+        console.log(error);
+    }
+    return undefined
 }
