@@ -25,7 +25,7 @@ export default function Home({route, navigation}: Props) {
   return (
     <View>
       <Appbar.Header elevated>
-        <Appbar.Content title="Tittle" />
+        <Appbar.Content title="Pokemons" />
       </Appbar.Header>
 
       <FlatList
